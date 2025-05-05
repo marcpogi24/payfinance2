@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Money Transfer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
+  <style>
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulseBackground {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      background-size: 300% 300%;
+      animation: pulseBackground 6s infinite alternate;
+      margin: 0;
+      color: white;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.15);
+      padding: 40px;
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 420px;
+      animation: fadeInUp 1.2s ease-in-out;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      text-align: center;
+    }
+
+    .tagline {
+      font-size: 1.2rem;
+      color: #e0e0e0;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: 600;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 8px;
+      border: none;
+      background: rgba(255, 255, 255, 0.3);
+      color: white;
+      box-sizing: border-box;
+      font-size: 1rem;
+    }
+
+    input::placeholder {
+      color: #fff;
+      opacity: 0.7;
+    }
+
+    button {
+      background-color: rgba(0, 123, 255, 0.8);
+      cursor: pointer;
+      font-size: 1.2rem;
+      margin-top: 20px;
+      transition: background-color 0.3s ease, transform 0.2s;
+    }
+
+    button:hover {
+      background-color: rgba(0, 86, 179, 0.9);
+      transform: translateY(-2px);
+    }
+
+    #status {
+      margin-top: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .back-button {
+      background-color: #dc3545;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Money Transfer Service</h1>
+    <p class="tagline">Fast, secure, and reliable transactions.</p>
+    
+    <form id="transferForm">
+      <label for="sender">Sender Name:</label>
+      <input type="text" id="sender" placeholder="Enter sender name" required />
+
+      <label for="receiver">Receiver Name:</label>
+      <input type="text" id="receiver" placeholder="Enter receiver name" required />
+
+      <label for="amount">Amount (PHP):</label>
+      <input type="number" id="amount" min="1" placeholder="Enter amount" required />
+
+      <button type="submit">Send Money</button>
+    </form>
+    <p id="status"></p>
+
+    <!-- Back Button -->
+    <button class="back-button" onclick="window.location.href='FinanceService.html';">Back to Finance Service</button>
+  </div>
+
+  <script>
+    document.getElementById('transferForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const sender = document.getElementById('sender').value;
+      const receiver = document.getElementById('receiver').value;
+      const amount = document.getElementById('amount').value;
+
+      if (!sender || !receiver || amount <= 0) {
+        document.getElementById('status').textContent = 'Invalid input. Please check your details.';
+        document.getElementById('status').style.color = '#dc3545';
+        return;
+      }
+
+      document.getElementById('status').textContent = `Successfully transferred PHP ${amount} from ${sender} to ${receiver}.`;
+      document.getElementById('status').style.color = '#28a745';
+    });
+  </script>
+</body>
+</html>

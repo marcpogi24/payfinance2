@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Awesome Bill Payment</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      transition: background 0.4s, color 0.4s;
+      background: linear-gradient(to right, #6dd5ed, #2193b0);
+      color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    body.dark {
+      background: #121212;
+      color: #eee;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      cursor: pointer;
+      font-size: 20px;
+      color: inherit;
+    }
+
+    .payment-form {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      padding: 30px 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 400px;
+      animation: fadeIn 1s ease-out;
+    }
+
+    body.dark .payment-form {
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .payment-form h2 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .input-group i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 12px 12px 12px 38px;
+      border: none;
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.1);
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+      color: #000; /* Light mode input text black */
+    }
+
+    body.dark .input-group input,
+    body.dark .input-group select {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: #fff; /* Dark mode input text white */
+    }
+
+    .input-group input:focus,
+    .input-group select:focus {
+      outline: none;
+      background-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 8px #00cec9;
+    }
+
+    ::placeholder {
+      color: #555;
+      opacity: 0.9;
+      animation: blink 2s infinite;
+    }
+
+    body.dark ::placeholder {
+      color: #ccc;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 0.9; }
+      50% { opacity: 0.4; }
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      background: linear-gradient(135deg, #00cec9, #00b894);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 18px rgba(0, 184, 148, 0.3);
+    }
+
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      background: #fff;
+      color: #2d3436;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+      text-align: center;
+      z-index: 999;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .popup.active {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .popup button {
+      margin-top: 20px;
+      background-color: #00b894;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .back-button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 14px;
+      border: none;
+      background-color: #e74c3c;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 18px rgba(231, 76, 60, 0.3);
+    }
+
+    @media (max-width: 480px) {
+      .payment-form {
+        padding: 20px;
+      }
+
+      .theme-toggle {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark Mode">
+    <i class="fas fa-moon" id="themeIcon"></i>
+  </div>
+
+  <form class="payment-form" id="paymentForm">
+    <h2>💳 Pay Your Bill</h2>
+
+    <div class="input-group">
+      <i class="fas fa-user"></i>
+      <input type="text" placeholder="Full Name" name="name" required />
+    </div>
+
+    <div class="input-group">
+      <i class="fas fa-map-marker-alt"></i>
+      <input type="text" placeholder="Billing Address" name="address" required />
+    </div>
+
+    <div class="input-group">
+      <i class="fas fa-dollar-sign"></i>
+      <input type="number" placeholder="Amount" name="amount" required />
+    </div>
+
+    <div class="input-group">
+      <i class="fas fa-credit-card"></i>
+      <select name="payment-method" required>
+        <option value="">Select Payment Method</option>
+        <option value="credit-card">Credit Card</option>
+        <option value="paypal">PayPal</option>
+        <option value="gcash">GCash</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <i class="fas fa-lock"></i>
+      <input type="text" placeholder="Card Number" name="card" id="cardNumber" maxlength="16" required />
+    </div>
+
+    <button type="submit">Pay Now</button>
+
+    <!-- Back to FinanceService button -->
+    <button type="button" class="back-button" onclick="window.location.href='FinanceService.html';">Back to Finance Service</button>
+  </form>
+
+  <div class="popup" id="popup">
+    <h3>✅ Payment Successful!</h3>
+    <p>Thank you for paying your bill.</p>
+    <button onclick="closePopup()">Close</button>
+  </div>
+
+  <script>
+    const form = document.getElementById('paymentForm');
+    const popup = document.getElementById('popup');
+    const cardNumberInput = document.getElementById('cardNumber');
+    const themeIcon = document.getElementById('themeIcon');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const cardNumber = cardNumberInput.value.trim();
+      if (!/^\d{16}$/.test(cardNumber)) {
+        alert("Please enter a valid 16-digit card number.");
+        return;
+      }
+      popup.classList.add('active');
+    });
+
+    function closePopup() {
+      popup.classList.remove('active');
+      form.reset();
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+      const isDark = document.body.classList.contains('dark');
+      themeIcon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    }
+
+    // Load saved theme
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark');
+        themeIcon.className = 'fas fa-sun';
+      }
+    });
+  </script>
+
+</body>
+</html>

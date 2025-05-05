@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Currency Exchange</title>
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes glow {
+      0% { text-shadow: 0 0 10px #fff, 0 0 20px #ff4b2b, 0 0 30px #ff4b2b; }
+      50% { text-shadow: 0 0 20px #fff, 0 0 30px #ff4b2b, 0 0 40px #ff4b2b; }
+      100% { text-shadow: 0 0 10px #fff, 0 0 20px #ff4b2b, 0 0 30px #ff4b2b; }
+    }
+
+    @keyframes flashEffect {
+      0% { background-color: rgba(255, 75, 43, 0.3); }
+      100% { background-color: transparent; }
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      color: white;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    .container {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 30px;
+      border-radius: 20px;
+      display: inline-block;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 1.2s ease-in-out;
+    }
+
+    .glow-text {
+      animation: glow 2s infinite;
+    }
+
+    input, select, button {
+      margin: 10px 0;
+      padding: 10px;
+      width: 100%;
+      border-radius: 10px;
+      border: none;
+    }
+
+    button {
+      background-color: #ff4b2b;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #ff3a1b;
+    }
+
+    .result-animate {
+      font-size: 1.2em;
+      margin-top: 20px;
+    }
+
+    .flash {
+      animation: flashEffect 0.5s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="container animate-fade-in">
+    <h1 class="glow-text">Currency Exchange</h1>
+    <label for="amount">Amount:</label>
+    <input type="number" id="amount" placeholder="Enter amount" />
+
+    <label for="fromCurrency">From:</label>
+    <select id="fromCurrency">
+      <option value="USD">USD</option>
+      <option value="EUR">EUR</option>
+      <option value="PHP">PHP</option>
+      <option value="JPY">JPY</option>
+      <option value="GBP">GBP</option>
+      <option value="AUD">AUD</option>
+      <option value="CAD">CAD</option>
+    </select>
+
+    <label for="toCurrency">To:</label>
+    <select id="toCurrency">
+      <option value="USD">USD</option>
+      <option value="EUR">EUR</option>
+      <option value="PHP">PHP</option>
+      <option value="JPY">JPY</option>
+      <option value="GBP">GBP</option>
+      <option value="AUD">AUD</option>
+      <option value="CAD">CAD</option>
+    </select>
+
+    <button id="btnConvert" onclick="convertCurrency()">Convert</button>
+    <button id="btnBack" onclick="goBack()">Back to FinanceService</button>
+    <p id="result" class="result-animate"></p>
+  </div>
+
+  <script>
+    const exchangeRates = {
+      USD: { USD: 1, EUR: 0.91, PHP: 56.25, JPY: 151.5, GBP: 0.79, AUD: 1.52, CAD: 1.34 },
+      EUR: { USD: 1.10, EUR: 1, PHP: 61.80, JPY: 166.5, GBP: 0.87, AUD: 1.67, CAD: 1.47 },
+      PHP: { USD: 0.018, EUR: 0.016, PHP: 1, JPY: 2.68, GBP: 0.014, AUD: 0.027, CAD: 0.024 },
+      JPY: { USD: 0.0066, EUR: 0.0060, PHP: 0.37, JPY: 1, GBP: 0.0052, AUD: 0.010, CAD: 0.0088 },
+      GBP: { USD: 1.27, EUR: 1.15, PHP: 70.90, JPY: 193.1, GBP: 1, AUD: 1.92, CAD: 1.69 },
+      AUD: { USD: 0.66, EUR: 0.60, PHP: 37.0, JPY: 100.1, GBP: 0.52, AUD: 1, CAD: 0.88 },
+      CAD: { USD: 0.75, EUR: 0.68, PHP: 41.8, JPY: 113.4, GBP: 0.59, AUD: 1.14, CAD: 1 }
+    };
+
+    function convertCurrency() {
+      const amount = parseFloat(document.getElementById('amount').value);
+      const fromCurrency = document.getElementById('fromCurrency').value;
+      const toCurrency = document.getElementById('toCurrency').value;
+
+      if (isNaN(amount) || amount <= 0) {
+        document.getElementById('result').innerText = 'Please enter a valid amount.';
+        return;
+      }
+
+      const rate = exchangeRates[fromCurrency][toCurrency];
+      const convertedAmount = (amount * rate).toFixed(2);
+      document.getElementById('result').innerText = `${amount} ${fromCurrency} = ${convertedAmount} ${toCurrency}`;
+      document.getElementById('result').classList.add('flash');
+
+      setTimeout(() => {
+        document.getElementById('result').classList.remove('flash');
+      }, 1000);
+    }
+
+    function goBack() {
+      window.location.href = 'financeService.html'; // Change to your actual FinanceService page path
+    }
+  </script>
+</body>
+</html>
